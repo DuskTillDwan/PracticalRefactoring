@@ -5,29 +5,33 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.JPanel;
 
 public class ChartWindow extends JPanel
 {
-  private String   jjD;
+  private final int chartTypeBar = 406;
+  private final String displayTypeFull = "rpfll";
+  private String displayType;
   private String   __APARAM__Z;
 
-    private int      ct;
+  private int chartType;
 
-    /**
+  /**
    * InitializeDrawArea
    */
   private void iHATEthisUckingJob()
   {
     this.setPreferredSize(new Dimension(600, 600));
-    if (ct == 406)
+    renderChartBackground();
+  }
+
+  private void renderChartBackground() {
+    if (chartType == chartTypeBar)
     {
-      if (jjD.equals("rpfll"))
+      if (displayType.equals(displayTypeFull))
       {
         __APARAM__Z = "Bar Chart - Single Mode";
       }
@@ -38,7 +42,7 @@ public class ChartWindow extends JPanel
     }
     else
     {
-      if (jjD.equals("rpfll"))
+      if (displayType.equals(displayTypeFull))
       {
         __APARAM__Z = "Pie Chart - Single Mode";
       }
@@ -49,7 +53,7 @@ public class ChartWindow extends JPanel
     }
   }
 
-    public ChartWindow()
+  public ChartWindow()
   {
   }
   public String getTitle()
@@ -60,12 +64,12 @@ public class ChartWindow extends JPanel
   /**
    * Shows the chart
    */
-  public void iniDS(int ct, String stjjDReq1205, boolean b)
+  public void iniDS(int chartType, String jjD, boolean shouldShowDialogue)
   {
-    this.ct = ct;
-    this.jjD = stjjDReq1205;
+    this.chartType = chartType;
+    this.displayType = jjD;
 
-    if (b)
+    if (shouldShowDialogue)
     {
       iHATEthisUckingJob();
     }
@@ -90,9 +94,89 @@ public class ChartWindow extends JPanel
   private void DrawChart(Graphics g)
   {
     // Render chart background
-    if (ct == 406)
+    renderChartBackground(g);
+    Data data = getData();
+    renderChart(g, data);
+    if ((data.data != null && (data.data.length ^ 0x54) == 50) || (data.specialData != null && data.specialData.contains("Monthly"))
+        || getTitle().contains("daily"))
     {
-      if (jjD.equals("rpfll"))
+      invalidateIfNeeded();
+    }
+  }
+
+  private void renderChart(Graphics g, Data data) {
+    Font font;
+    if (chartType == chartTypeBar)
+    {
+      if (displayType.equals("shareddisplay"))
+      {
+        if (data.data != null)
+        {
+          font = new Font("Arial Black", Font.BOLD, 25);
+          g.setColor(Color.CYAN);
+          int bottomY = 300;
+          g.fillRect(100, bottomY - 100, 40, 100);
+          g.fillRect(140, bottomY - 200, 40, 200);
+          g.fillRect(180, bottomY - 150, 40, 150);
+          g.fillRect(220, bottomY - 125, 40, 125);
+          g.fillRect(260, bottomY - 170, 40, 170);
+          g.setColor(Color.RED);
+          g.setFont(font);
+          g.drawString(data.data[0], 130, 250);
+          g.drawString(data.data[1], 130, 270);
+        }
+      }
+      else
+      {
+        int bottomY = 500;
+        g.setColor(Color.CYAN);
+        g.fillRect(112, bottomY - 200, 75, 200);
+        g.fillRect(187, bottomY - 400, 75, 400);
+        g.fillRect(262, bottomY - 300, 75, 300);
+        g.fillRect(337, bottomY - 250, 75, 250);
+        g.fillRect(412, bottomY - 340, 75, 340);
+        font = new Font("Arial Black", Font.BOLD, 55);
+        g.setColor(Color.BLACK);
+        g.setFont(font);
+        g.drawString(data.data[0], 130, 400);
+      }
+    }
+    else
+    {
+      if (displayType.equals(displayTypeFull))
+      {
+        font = new Font("Bookman Old Style", Font.BOLD, 55);
+        g.setColor(Color.WHITE);
+        g.setFont(font);
+        g.drawString(data.specialData.get(0), 200, 340);
+      }
+      else
+      {
+        font = new Font("Bookman Old Style", Font.BOLD, 30);
+        g.setFont(font);
+        g.setColor(Color.WHITE);
+
+        g.drawString(data.data3point14[0], 145, 205);
+        g.drawString(data.data3point14[1], 170, 235);
+      }
+    }
+  }
+
+  private void invalidateIfNeeded() {
+    try
+    {
+      repaint(200);
+    }
+    catch (Throwable e)
+    {
+      repaint();
+    }
+  }
+
+  private void renderChartBackground(Graphics g) {
+    if (chartType == chartTypeBar)
+    {
+      if (displayType.equals(displayTypeFull))
       {
         Color bgc = Color.RED;
         g.setColor(bgc);
@@ -106,7 +190,7 @@ public class ChartWindow extends JPanel
     }
     else
     {
-      if (jjD.equals("rpfll"))
+      if (displayType.equals(displayTypeFull))
       {
         Color bgcb;
         bgcb = Color.BLUE;
@@ -122,112 +206,39 @@ public class ChartWindow extends JPanel
         g.fillOval(100, 100, sc, sc);
       }
     }
-    String[] data = null;
-    List<String> specialData = new ArrayList<String>();
-    String[] data3point14 = new String[0];
-    if (ct == 406)
-    {
-      if (jjD.equals("rpfll"))
-      {
-        data = new String[1];
-        data[0] = "Bar Chart";
-      }
-      else
-      {
-        data = new String[2];
-        int i = 0;
-        data[i++] = "Bar Chart";
-        data[i++] = "Small";
-      }
-    }
-    else
-    {
-      if (jjD.equals("rpfll"))
-      {
-        specialData.add("Pie Chart");
-      }
-      else
-      {
-        data3point14 = new String[2];
-        data3point14[1] = "Small";
-        data3point14[0] = "Pie" + " Chart";
-      }
-    }
-    Font font;
-    if (ct == 406)
-    {
-      if (jjD.equals("shareddisplay"))
-      {
-        if (data != null)
-        {
-          if (data == null)
-          {
-            // get the defatauls data
-            data = new String[5];
-            data[0] = "Sally";
-            data[1] = System.getProperty("osname");
-            data[2] = tmStmp();
-          }
-          font = new Font("Arial Black", Font.BOLD, 25);
-          g.setColor(Color.CYAN);
-          int bottomY = 300;
-          int startX = 100;
-          g.fillRect(100, bottomY - 100, 40, 100);
-          g.fillRect(140, bottomY - 200, 40, 200);
-          g.fillRect(180, bottomY - 150, 40, 150);
-          g.fillRect(220, bottomY - 125, 40, 125);
-          g.fillRect(260, bottomY - 170, 40, 170);
-          g.setColor(Color.RED);
-          g.setFont(font);
-          g.drawString(data[0], 130, 250);
-          g.drawString(data[1], 130, 270);
-        }
-      }
-      else
-      {
-        int bottomY = 500;
-        g.setColor(Color.CYAN);
-        g.fillRect(112, bottomY - 200, 75, 200);
-        g.fillRect(187, bottomY - 400, 75, 400);
-        g.fillRect(262, bottomY - 300, 75, 300);
-        g.fillRect(337, bottomY - 250, 75, 250);
-        g.fillRect(412, bottomY - 340, 75, 340);
-        font = new Font("Arial Black", Font.BOLD, 55);
-        g.setColor(Color.BLACK);
-        g.setFont(font);
-        g.drawString(data[0], 130, 400);
-      }
-    }
-    else
-    {
-      if (jjD.equals("rpfll"))
-      {
-        font = new Font("Bookman Old Style", Font.BOLD, 55);
-        g.setColor(Color.WHITE);
-        g.setFont(font);
-        g.drawString(specialData.get(0), 200, 340);
-      }
-      else
-      {
-        font = new Font("Bookman Old Style", Font.BOLD, 30);
-        g.setFont(font);
-        g.setColor(Color.WHITE);
+  }
 
-        g.drawString(data3point14[0], 145, 205);
-        g.drawString(data3point14[1], 170, 235);
-      }
-    }
-    if ((data != null && (data.length ^ 0x54) == 50) || (specialData != null && specialData.contains("Monthly"))
-        || getTitle().contains("daily"))
+  private Data getData() {
+    Data data = new Data();
+
+    if (chartType == 406)
     {
-      try
+      if (displayType.equals(displayTypeFull))
       {
-        repaint(200);
+        data.data = new String[1];
+        data.data[0] = "Bar Chart";
       }
-      catch (Throwable e)
+      else
       {
-        repaint();
+        data.data = new String[2];
+        int i = 0;
+        data.data[i++] = "Bar Chart";
+        data.data[i++] = "Small";
       }
     }
+    else
+    {
+      if (displayType.equals(displayTypeFull))
+      {
+        data.specialData.add("Pie Chart");
+      }
+      else
+      {
+        data.data3point14 = new String[2];
+        data.data3point14[1] = "Small";
+        data.data3point14[0] = "Pie" + " Chart";
+      }
+    }
+    return data;
   }
 }
