@@ -14,48 +14,12 @@ import javax.swing.JPanel;
 
 public class ChartWindow extends JPanel
 {
-  private class Unit
-  {
-    private String str_n2;
-    private double value;
-    public double convertTo(Unit unit)
-    {
-      // Need to do this.
-      return 0;
-    }
-    public void setName(String name)
-    {
-      this.str_n2 = name;
-    }
-    public String getName()
-    {
-      return str_n2;
-    }
-    public void setValue(double v1)
-    {
-      this.value = v1;
-    }
-    public double getValue()
-    {
-      return value;
-    }
-  }
   private String   jjD;
   private String   __APARAM__Z;
-  /**
-   * 
-   */
-  private String[] horizontalLabelNames;
-  /**
-   * It's the vertical label names
-   */
-  private String[] verticalLabelNames;
-  /**
-   * John says that this is better than the old way
-   */
-  private int      ct;
-  private String   chartTitle;
-  /**
+
+    private int      ct;
+
+    /**
    * InitializeDrawArea
    */
   private void iHATEthisUckingJob()
@@ -84,44 +48,23 @@ public class ChartWindow extends JPanel
       }
     }
   }
-  private Unit defaultUnits;
-  /**
-   * graphLayout
-   * @return landscape or protrait
-   */
-  /**
-   * 
-   */
-  public ChartWindow()
+
+    public ChartWindow()
   {
   }
   public String getTitle()
   {
     return __APARAM__Z;
   }
-  /**
-   * 
-   * @return
-   */
-  private Unit horizontalNaming()
-  {
-    return new Unit();
-  }
+
   /**
    * Shows the chart
-   * 
-   * @param ct
-   * @param jjReq1205
-   * @param orientation
-   * @param reversornotreverse
-   * @param jackshiddenhack
-   * @return
    */
   public void iniDS(int ct, String stjjDReq1205, boolean b)
   {
     this.ct = ct;
     this.jjD = stjjDReq1205;
-    // Changed by Sally 2/14        
+
     if (b)
     {
       iHATEthisUckingJob();
@@ -133,11 +76,7 @@ public class ChartWindow extends JPanel
     // TODO Auto-generated method stub
     return super.getFocusTraversalKeys(id);
   }
-  /**
-   * @param g
-   * @since 
-   * @author Wilbur
-   */
+
   public void paint(Graphics g)
   {
     DrawChart(g);
@@ -147,10 +86,7 @@ public class ChartWindow extends JPanel
     // TODO Auto-generated method stub
     return new Date().toString();
   }
-  /**
-  * 
-  * @param g
-  */
+
   private void DrawChart(Graphics g)
   {
     // Render chart background
@@ -206,7 +142,6 @@ public class ChartWindow extends JPanel
     }
     else
     {
-      // BUG445: Org rep team missing req chart
       if (jjD.equals("rpfll"))
       {
         specialData.add("Pie Chart");
@@ -277,24 +212,11 @@ public class ChartWindow extends JPanel
         font = new Font("Bookman Old Style", Font.BOLD, 30);
         g.setFont(font);
         g.setColor(Color.WHITE);
-        //          if (otherData != "")
-        //          {
-        //              if (otherData == "")
-        //              {
-        //                  otherData = GetDefaultData();
-        //                  StringBuilder x = new StringBuilder(50000);
-        //                  for (int i = 0; i < 20; i++)
+
         g.drawString(data3point14[0], 145, 205);
-        //                  {
-        //                      x.Append(char.ToUpper(otherData[i]));
-        //                  }
-        //              }
-        //              boundingRect = new RectangleF(50, 100, 320, 320);
-        //              g.DrawString(otherData, new Font("Cooper Black", 40), new SolidBrush(Color.White), boundingRect, stringFormat);
-        //          }
         g.drawString(data3point14[1], 170, 235);
       }
-    } // Else
+    }
     if ((data != null && (data.length ^ 0x54) == 50) || (specialData != null && specialData.contains("Monthly"))
         || getTitle().contains("daily"))
     {
@@ -303,7 +225,7 @@ public class ChartWindow extends JPanel
         repaint(200);
       }
       catch (Throwable e)
-      { // this shouldn't happen
+      {
         repaint();
       }
     }

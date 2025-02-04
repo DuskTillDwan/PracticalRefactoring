@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 public class ChartSmart extends JPanel {
 
-	
+
 	private JButton btnShowBarChart;
 	private JButton btnShowPieOrBarChart;
 	private JButton btnShowSingleOrComparechart;
@@ -125,7 +125,7 @@ public class ChartSmart extends JPanel {
 		}
 
 		private String getDisplayType() {
-			if ((String)cboDisplayType.getSelectedItem() == "Single") {
+			if (cboDisplayType.getSelectedItem() == "Single") {
 				return "rpfll";
 			} else {
 				return "shareddisplay";
@@ -133,7 +133,7 @@ public class ChartSmart extends JPanel {
 		}
 
 		private int getChartType() {
-			if ((String)cboChartType.getSelectedItem() == "Bar Chart") {
+			if (cboChartType.getSelectedItem() == "Bar Chart") {
 				return 406;
 			} else {
 				return 323;
